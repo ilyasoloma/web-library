@@ -72,10 +72,10 @@ const deduplicateByHash = (array, hasher) => {
 };
 
 const getItemCanonicalUrl = ({ libraryKey, itemKey }) =>
-	`https://192.168.62.111/cors/http://192.168.62.111:8080/${libraryKey.startsWith('u') ? 'user' : 'groups'}/${libraryKey.slice(1)}/items/${itemKey}`;
+	`https://192.168.62.111/cors/http://zotero.org/${libraryKey.startsWith('u') ? 'user' : 'groups'}/${libraryKey.slice(1)}/items/${itemKey}`;
 
 const getItemFromCanonicalUrl = url => {
-	const match = url.match('https?://192.168.62.111/cors/http://192.168.62.111:8080/(users|groups)/([0-9]+)/items/([A-Z0-9]{8})');
+	const match = url.match('https?://192.168.62.111/cors/https?://zotero.org/(users|groups)/([0-9]+)/items/([A-Z0-9]{8})');
 	if(match) {
 		const [, libraryType, libraryID, itemKey] = match;
 		const libraryKey = `${libraryType === 'users' ? 'u' : 'g'}${libraryID}`;

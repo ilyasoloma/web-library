@@ -4,14 +4,14 @@ import { coreCitationStyles } from '../../../data/citation-styles-data.json';
 
 export const apiKey = '';
 export const apiConfig = {
-	apiAuthorityPart: '192.168.62.111/192.168.62.111:8080',
+	apiAuthorityPart: 'api.zotero.org',
 	retry: 2,
 };
 
-export const websiteUrl = 'https://192.168.62.111/http://192.168.62.111:8080';
+export const websiteUrl = 'https://www.zotero.org/';
 export const buyStorageUrl = websiteUrl + 'storage?ref=usb';
 export const stylesSourceUrl = 'https://www.zotero.org/styles-files/styles.json';
-export const streamingApiUrl = 'ws://192.168.62.111:8081/';
+export const streamingApiUrl = 'wss://stream.zotero.org/';
 export const translateUrl = 'location' in window ? window.location.origin : '';
 export const pdfReaderURL = '/static/pdf-reader/reader.html';
 export const pdfReaderCMapsRoot = '/static/pdf-reader/pdf/web/cmaps/';

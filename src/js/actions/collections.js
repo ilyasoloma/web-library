@@ -124,7 +124,7 @@ const fetchCollections = (libraryKey, { start = 0, limit = 50, sort = 'dateModif
 			const response = await api(config.apiKey, config.apiConfig)
 				.library(libraryKey)
 				.collections()
-				.get({ start, limit, sort, direction, ...rest });
+				.get({ start, limit, sort, direction, ...rest }, 'http');
 			const collections = response.getData();
 			const totalResults = parseInt(response.response.headers.get('Total-Results'), 10);
 			return { collections, response, totalResults };

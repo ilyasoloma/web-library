@@ -1,7 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 const http = require('http');
-const https = require('https');
+const https = require('http');
 const httpProxy = require('http-proxy');
 const serveStatic = require('serve-static');
 const checkTrue = env => !!(env && (parseInt(env) || env === true || env === "true"));
@@ -17,7 +17,10 @@ const proxy = httpProxy.createProxyServer();
 const handler = (req, resp) => {
 	const fallback = () => {
 		fs.readFile(path.join(__dirname, '..', 'build', htmlFile), (err, buf) => {
-			resp.setHeader('Content-Type', 'text/html');
+			resp.setHeader('Access-Control-Allow-Origin', '*');
+			resp.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+			resp.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+			resp.setHeader('Access-Control-Allow-Credentials', true);
 			resp.end(buf);
 		});
 	};

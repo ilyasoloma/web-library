@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Zotero Web Library Demo</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/static/zotero-web-library.css">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="apple-touch-icon" sizes="192x192" href="/static/icons/icon-192x192.png">
+    <link rel="apple-touch-icon" sizes="512x512" href="/static/icons/icon-512x512.png">
+</head>
+
+<body>
+    <div id="zotero-web-library"></div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const userSlug = localStorage.getItem('userSlug');
+            const userId = localStorage.getItem('userId');
+            const apiKey = localStorage.getItem('apiKey');
+            if (!userSlug || !userId || !apiKey) {
+                window.location.href = 'login.html';
+            } else {
+                const config = {
+                    userSlug: userSlug,
+                    userId: userId,
+                    apiKey: apiKey,
+                    libraryType: 'user',
+                    target: 'zotero-web-library'
+                };
+                initializeLibrary(config);
+            }
+        });
+
+        function initializeLibrary(config) {
+            const configElement = document.createElement('script');
+            configElement.type = 'application/json';
+            configElement.id = 'zotero-web-library-config';
+            configElement.textContent = JSON.stringify({
+                userSlug: config.userSlug,
+                userId: config.userId,
+                apiKey: config.apiKey
+            });
+            document.body.appendChild(configElement);
+
+            const scriptElement = document.createElement('script');
+            scriptElement.src = '/static/zotero-web-library.js';
+            document.body.appendChild(scriptElement);
+
+            scriptElement.onload = function () {
+                console.log('Library initialized');
+                observeDOM(document.getElementById('zotero-web-library'), function () {
+                    attachLogoutHandler();
+                });
+            };
+        }
+
+        function attachLogoutHandler() {
+            const logoutButton = document.querySelector('.zotero-web-library-menu-item-logout');
+            if (logoutButton) {
+                console.log('Logout button found');
+                logoutButton.addEventListener('click', function () {
+                    console.log('Logout button clicked');
+                    logout();
+                });
+            } else {
+                console.log('Logout button not found');
+            }
+        }
+
+        function logout() {
+            console.log('Logging out');
+            localStorage.removeItem('userSlug');
+            localStorage.removeItem('userId');
+            localStorage.removeItem('apiKey');
+            document.getElementById('zotero-web-library').innerHTML = '';
+            window.location.href = 'login.html';
+        }
+
+        function observeDOM(obj, callback) {
+            const obs = new MutationObserver((mutations, observer) => {
+                callback();
+                observer.disconnect(); // Отключаем после первого вызова
+            });
+            obs.observe(obj, { childList: true, subtree: true });
+        }
+    </script>
+
+    <script type="application/json" id="zotero-web-library-menu-config">
+        {
+            "desktop": [
+                {
+                    "label": "Zotero User",
+                    "truncate": true,
+                    "dropdown": true,
+                    "entries": [
+                        {
+                            "label": "Logout",
+                            "className": "zotero-web-library-menu-item-logout"
+                        }
+                    ]
+                },
+                {
+                    "label": "Upgrade Storage",
+                    "href": "/settings/storage?ref=usb",
+                    "className": "btn btn-secondary hidden-md-down upgrade-storage",
+                    "position": "right",
+                    "aria-hidden": true
+                }
+            ],
+            "mobile": [
+                {
+                    "label": "My Library",
+                    "href": "/mylibrary",
+                    "active": true
+                },
+                {
+                    "label": "Groups",
+                    "href": "/groups"
+                },
+                {
+                    "label": "Documentation",
+                    "href": "/support"
+                },
+                {
+                    "label": "Forums",
+                    "href": "https://forums.zotero.org"
+                },
+                {
+                    "label": "Get Involved",
+                    "href": "/getinvolved"
+                },
+                {
+                    "label": "Test User",
+                    "href": "/testuser1",
+                    "className": "separated"
+                },
+                {
+                    "label": "Inbox (13)",
+                    "href": "https://forums.zotero.org/messages/inbox",
+                    "className": "separated"
+                },
+                {
+                    "label": "Settings",
+                    "href": "/settings"
+                },
+                {
+                    "label": "Use Old Web Library",
+                    "href": "/testuser1/items?usenewlibrary=0"
+                },
+                {
+                    "label": "Logout",
+                    "href": "#",
+                    "class": "logout"
+                },
+                {
+                    "label": "Upgrade Storage",
+                    "href": "/settings/storage?ref=usb",
+                    "className": "separated"
+                }
+            ]
+        }
+    </script>
+</body>
+</html>
+

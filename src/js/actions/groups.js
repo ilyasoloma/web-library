@@ -52,6 +52,12 @@ const fetchGroups = (libraryKey, queryOptions) => {
 				.groups()
 				.get(queryOptions);
 			const groups = response.getData();
+			console.log(parseInt(response.response.headers.get('Total-Results'), 10));
+			console.log(typeof(parseInt(response.response.headers.get('Total-Results'), 10)));
+			console.log('********');
+			console.log(parseInt(response.response.headers.get('Total-Results')));
+			console.log(typeof(parseInt(response.response.headers.get('Total-Results'))));
+					
 			const totalResults = parseInt(response.response.headers.get('Total-Results'), 10);
 
 			dispatch({

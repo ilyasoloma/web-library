@@ -149,10 +149,16 @@ const filterTags = (state, removedTags) => {
 
 const populate = (state, newItems, action, keyName, comparer = null) => {
 	const { [keyName]: prevItems = [] } = state;
-	const { queryOptions, totalResults } = action;
+	var { queryOptions, totalResults } = action;
+	console.log(isNaN(totalResults));
+	if(isNaN(totalResults)){
+	   //totalResults = 0;
+	}
+	
 	const { start, limit, sort, direction } = queryOptions;
 
 	const items = [...prevItems];
+	
 	items.length = totalResults;
 
 	for(let i = 0; i < newItems.length; i++) {
