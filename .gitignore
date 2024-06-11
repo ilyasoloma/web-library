@@ -15,5 +15,6 @@ src/static/pdf-worker/
 src/static/note-editor/
 src/static/fonts/
 
+src/html/__*
 /playwright
 local.log
